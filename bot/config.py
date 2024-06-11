@@ -33,7 +33,7 @@ class Config(object):
 
 
 class Script(object):
-    START_MESSAGE = """Hi, {first_name}, Welcome to our Movie and Webseries Provider Bot.
+    START_MESSAGE = """Hi, {mention}, Welcome to our Movie and Webseries Provider Bot.
 Exclusively work for VIP Studios.
 
 Exclusive Content, VIP Experience."""
