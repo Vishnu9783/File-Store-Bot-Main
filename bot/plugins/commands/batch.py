@@ -12,7 +12,7 @@ from database import db
 )
 @check
 async def batch(bot: pyrogram.Client, message: pyrogram.types.Message):
-    ask_text = "𝖲𝖾𝗇𝖽 𝖬𝖾 𝖳𝗁𝖾 𝖥𝗂𝗋𝗌𝗍 𝖢𝗁𝖺𝗇𝗇𝖾𝗅 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 𝗈𝗋 𝖥𝗂𝗅𝖾 𝖫𝗂𝗇𝗄 𝖳𝗈 𝖠𝖽𝖽 𝖳𝗈 𝖳𝗁𝖾 𝖡𝖺𝗍𝖼𝗁n"
+    ask_text = "𝖲𝖾𝗇𝖽 𝖬𝖾 𝖳𝗁𝖾 𝖥𝗂𝗋𝗌𝗍 𝖢𝗁𝖺𝗇𝗇𝖾𝗅 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 𝗈𝗋 𝖥𝗂𝗅𝖾 𝖫𝗂𝗇𝗄 𝖳𝗈 𝖠𝖽𝖽 𝖳𝗈 𝖳𝗁𝖾 𝖡𝖺𝗍𝖼𝗁"
 
     ask = await message.chat.ask(ask_text, filters=pyrogram.filters.text)
 
