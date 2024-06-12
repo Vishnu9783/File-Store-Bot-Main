@@ -28,13 +28,13 @@ async def start(bot: Client, message: Message):
         return await get_file(bot, message)
 
     if chat_id not in admins:
-        text = Script.START_MESSAGE.format(first_name=message.from_user.first_name)
+        text = Script.START_MESSAGE.format(first_name=message.from_user.first_name, mention=message.from_user.mention)
         await handle_reply(
             message, text, reply_markup=InlineKeyboardMarkup(Buttons.USER_START_BUTTONS)
         )
         return
 
-    text = Script.START_MESSAGE.format(first_name=message.from_user.first_name)
+    text = Script.START_MESSAGE.format(first_name=message.from_user.first_name, mention=message.from_user.mention)
     await handle_reply(
         message, text, reply_markup=InlineKeyboardMarkup(Buttons.START_BUTTONS)
     )
