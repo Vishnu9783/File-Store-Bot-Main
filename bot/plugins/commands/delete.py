@@ -12,7 +12,7 @@ async def delete_file_command(bot: Client, message: Message):
     deleted_from_db = False
     try:
         ask = await message.chat.ask(
-            "Send me the file stored link to delete\n\n/cancel to cancel",
+            "Send me the file stored link to delete\n\n/cancel to cancel the process",
         )
     except Exception as e:
         print(e)
@@ -41,7 +41,7 @@ async def delete_file_command(bot: Client, message: Message):
 
         if not file:
             await ask.reply_text(
-                f"{url} not found in database", disable_web_page_preview=True
+                f"{url} Not found in database", disable_web_page_preview=True
             )
             continue
 
