@@ -82,9 +82,9 @@ async def batch(bot: pyrogram.Client, message: pyrogram.types.Message):
             reply_markup=pyrogram.types.ReplyKeyboardRemove(),
         )
 
-    if len(files) > 20:
+    if len(files) > 50:
         return await ask.reply_text(
-            "𝖸𝗈𝗎 𝖢𝖺𝗇 𝖮𝗇𝗅𝗒 𝖠𝖽𝖽 𝖠 𝖬𝖺𝗑𝗂𝗆𝗎𝗆 𝖮𝖿 20 𝖥𝗂𝗅𝖾𝗌 𝖳𝗈 𝖠 𝖡𝖺𝗍𝖼𝗁",
+            "𝖸𝗈𝗎 𝖢𝖺𝗇 𝖮𝗇𝗅𝗒 𝖠𝖽𝖽 𝖠 𝖬𝖺𝗑𝗂𝗆𝗎𝗆 𝖮𝖿 50 𝖥𝗂𝗅𝖾𝗌 𝖳𝗈 𝖠 𝖡𝖺𝗍𝖼𝗁",
             reply_markup=pyrogram.types.ReplyKeyboardRemove(),
         )
 
