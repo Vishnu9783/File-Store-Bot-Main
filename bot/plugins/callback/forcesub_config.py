@@ -48,17 +48,20 @@ async def force_sub_config(bot: Client, message: types.CallbackQuery):
         )
         text += f"{i}. {sub['title']} - {'Enabled' if sub['status'] else 'Disabled'} - {sub['method'].capitalize()}\n"
 
-    buttons.append(
-        [
-            types.InlineKeyboardButton(
-                text="Add Channel", callback_data="force_sub_add_channel"
-            )
-        ]
+    buttons.extend(
+        (
+            [
+                types.InlineKeyboardButton(
+                    text="Add Channel", callback_data="force_sub_add_channel"
+                )
+            ],
+            [
+                types.InlineKeyboardButton(
+                    text="Back to Main Menu", callback_data="start"
+                )
+            ],
+        )
     )
-    buttons.append(
-        [types.InlineKeyboardButton(text="Back to Main Menu", callback_data="start")]
-    )
-
     await message.edit_message_text(
         text=text,
         reply_markup=types.InlineKeyboardMarkup(buttons),
@@ -134,11 +137,7 @@ async def force_sub_method(bot: Client, message: types.CallbackQuery):
     force_sub = force_sub.get("value", {})
 
     sub = force_sub[str(channel_id)]
-    if sub["method"] == "direct":
-        sub["method"] = "request"
-    else:
-        sub["method"] = "direct"
-
+    sub["method"] = "request" if sub["method"] == "direct" else "direct"
     force_sub[str(channel_id)] = sub
     await db.config.update_config("force_sub_config", force_sub)
     await force_sub_config(bot, message)

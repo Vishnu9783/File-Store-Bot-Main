@@ -54,9 +54,9 @@ async def forcesub(c: Client, m: Message):
                 )
             ]
         )
+        text += "\n𝖧𝖾𝗅𝗅𝗈 {mention} 𝗒𝗈𝗎 𝗁𝖺𝗏𝖾 𝗍𝗈 𝗃𝗈𝗂𝗇 𝗆𝗒 𝖼𝗁𝖺𝗇𝗇𝖾𝗅𝗌 𝗍𝗈 𝗀𝖾𝗍 𝗒𝗈𝗎𝗋 𝖿𝗂𝗅𝖾𝗌. 𝖪𝗂𝗇𝖽𝗅𝗒 𝗃𝗈𝗂𝗇 𝗍𝗁𝖾 𝖼𝗁𝖺𝗇𝗇𝖾𝗅𝗌 𝖺𝗇𝖽 𝗍𝗋𝗒 𝖺𝗀𝖺𝗂𝗇."
         await m.reply(
-            text=text
-            + "\n𝖧𝖾𝗅𝗅𝗈 {mention} 𝗒𝗈𝗎 𝗁𝖺𝗏𝖾 𝗍𝗈 𝗃𝗈𝗂𝗇 𝗆𝗒 𝖼𝗁𝖺𝗇𝗇𝖾𝗅𝗌 𝗍𝗈 𝗀𝖾𝗍 𝗒𝗈𝗎𝗋 𝖿𝗂𝗅𝖾𝗌. 𝖪𝗂𝗇𝖽𝗅𝗒 𝗃𝗈𝗂𝗇 𝗍𝗁𝖾 𝖼𝗁𝖺𝗇𝗇𝖾𝗅𝗌 𝖺𝗇𝖽 𝗍𝗋𝗒 𝖺𝗀𝖺𝗂𝗇.",
+            text=text.format(mention=m.from_user.mention),
             reply_markup=InlineKeyboardMarkup(markup),
             quote=True,
         )
@@ -66,7 +66,6 @@ async def forcesub(c: Client, m: Message):
     await out.delete()
     await m.continue_propagation()
 
-
 @Client.on_callback_query(filters.regex("^refresh"))
 async def refresh_cb(c: Client, m):
     command = m.data.split("_", 1)[1] if len(m.data.split("_")) > 1 else ""
@@ -75,9 +74,9 @@ async def refresh_cb(c: Client, m):
     force_sub = force_sub.get("value", [])
 
     channel_status = await check_channels(c, m.from_user.id, force_sub)
-    not_joined_channels = [ch for ch in channel_status if not ch["joined"]]
-
-    if not_joined_channels:
+    if not_joined_channels := [
+        ch for ch in channel_status if not ch["joined"]
+    ]:
         markup = [
             [InlineKeyboardButton(text=f"Join {i['name']}", url=i["link"])]
             for i in not_joined_channels
@@ -103,6 +102,7 @@ async def refresh_cb(c: Client, m):
         m = m.message
         m.text = f"/start {command}"
         m.command = ["start", command]
+        await get_file(c, m)
         await get_file(c, m)
 
 
