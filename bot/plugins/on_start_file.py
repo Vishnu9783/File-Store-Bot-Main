@@ -138,7 +138,7 @@ async def custom_send(
     text = message.text
     try:
         base64_string = text.split(" ", 1)[1]
-    except:
+    except Exception:
         return
 
     string = await decode(base64_string)
@@ -147,7 +147,7 @@ async def custom_send(
         try:
             start = int(int(argument[1]) / abs(Config.CHANNELS))
             end = int(int(argument[2]) / abs(Config.CHANNELS))
-        except:
+        except Exception:
             return
         if start <= end:
             ids = range(start, end + 1)
