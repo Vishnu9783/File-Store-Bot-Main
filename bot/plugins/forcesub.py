@@ -7,7 +7,7 @@ from bot.utils import get_admins, is_user_in_request_join
 from database import db
 
 
-@Client.on_message(filters.private & filters.incoming, group=-1)
+#@Client.on_message(filters.private & filters.incoming, group=-1)
 async def forcesub(c: Client, m: Message):
     admins = await get_admins()
     if m.text and not m.text.startswith("/") and m.chat.id not in admins:
