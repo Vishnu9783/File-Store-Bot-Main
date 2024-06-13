@@ -211,6 +211,7 @@ async def custom_send(
 
 
 async def copy_message(message: Message, chat_id: int, **kwargs):
+    await asyncio.sleep(0.5)
     return await message.copy(chat_id=chat_id, **kwargs)
 
 
