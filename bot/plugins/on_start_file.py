@@ -84,6 +84,7 @@ async def handle_file(
 async def batch_handler(
     bot: Client, message: Message, message_delete_time: int, file_delete_time: int
 ):
+    og_message = message
     user_chat_id = message.from_user.id
     _, batch_id = message.command[1].split("_", 1)
 
@@ -109,10 +110,12 @@ async def batch_handler(
                 message, user_chat_id, caption=caption, reply_markup=None
             )
         except FloodWait as e:
+            sts = await send_floodwait_message(bot, e, og_message)
             await sleep(e.value)
             file_message = await copy_message(
                 message, user_chat_id, caption=caption, reply_markup=None
             )
+            await sts.delete()
 
         del_files.append(file_message.id)
         await sleep(1)
@@ -128,7 +131,9 @@ async def batch_handler(
         await schedule_deletion(user_chat_id, file_message_id, file_delete_time)
 
 
-async def custom_send(client: Client, message: Message, file_delete_time: int, message_delete_time: int):
+async def custom_send(
+    client: Client, message: Message, file_delete_time: int, message_delete_time: int
+):
     user_chat_id = message.from_user.id
     text = message.text
     try:
@@ -157,7 +162,7 @@ async def custom_send(client: Client, message: Message, file_delete_time: int, m
     elif len(argument) == 2:
         try:
             ids = [int(int(argument[1]) / abs(Config.CHANNELS))]
-        except:
+        except Exception:
             return
     temp_msg = await message.reply("Please wait...")
 
@@ -171,7 +176,7 @@ async def custom_send(client: Client, message: Message, file_delete_time: int, m
 
     for msg in messages:
         msg: Message
-        caption = "" if not msg.caption else msg.caption.html
+        caption = msg.caption.html if msg.caption else ""
         try:
             log = await msg.copy(
                 chat_id=message.from_user.id,
@@ -181,6 +186,7 @@ async def custom_send(client: Client, message: Message, file_delete_time: int, m
             )
             await asyncio.sleep(0.5)
         except FloodWait as e:
+            sts = await send_floodwait_message(client, e, message)
             await asyncio.sleep(e.value)
             log = await msg.copy(
                 chat_id=message.from_user.id,
@@ -188,11 +194,11 @@ async def custom_send(client: Client, message: Message, file_delete_time: int, m
                 parse_mode=ParseMode.HTML,
                 reply_markup=None,
             )
+            await sts.delete()
+
         except Exception as e:
             print(e)
             continue
-            pass
-        
         if log:
             await schedule_deletion(log.chat.id, log.id, file_delete_time)
 
@@ -203,5 +209,10 @@ async def custom_send(client: Client, message: Message, file_delete_time: int, m
 
     await schedule_deletion(temp_message.chat.id, temp_message.id, message_delete_time)
 
+
 async def copy_message(message: Message, chat_id: int, **kwargs):
     return await message.copy(chat_id=chat_id, **kwargs)
+
+
+async def send_floodwait_message(client: Client, e: FloodWait, message: Message):
+    return await message.reply(f"You are sending too many requests. Please wait for {e.value} seconds")
