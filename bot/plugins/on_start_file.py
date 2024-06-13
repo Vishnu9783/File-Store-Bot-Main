@@ -194,6 +194,7 @@ async def custom_send(
                 parse_mode=ParseMode.HTML,
                 reply_markup=None,
             )
+            await asyncio.sleep(0.5)
             await sts.delete()
 
         except Exception as e:
